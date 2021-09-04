@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { ContextInicio } from "./ContextIncio";
 
 const Contenedor = styled.div`
     position: relative;
@@ -48,13 +49,22 @@ const Button = styled.button`
     }
 `;
 const Card = ({ foto }) => {
+    const { setModal } = useContext(ContextInicio);
+    const handleClick = (e) => {
+        const img = e.target.parentElement.nextSibling;
+        setModal(img.getAttribute("dataimg"));
+    };
     return (
         <Contenedor className="card">
             <DivButtons>
-                <Button>Ver</Button>
-                <Button>Agregar</Button>
+                <Button onClick={handleClick}>Ver</Button>
+                <Button id={foto.id}>Agregar</Button>
             </DivButtons>
-            <img src={foto.previewURL} alt={foto.tags} />
+            <img
+                src={foto.previewURL}
+                dataimg={foto.webformatURL}
+                alt={foto.tags}
+            />
         </Contenedor>
     );
 };

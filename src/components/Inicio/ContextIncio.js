@@ -6,6 +6,11 @@ const ContextIncioProvider = ({ children }) => {
     const [resultados, setResultados] = useState(null);
     const [url, setUrl] = useState(null);
     const [paginaActual, setPaginaActual] = useState(1);
+    const [modal, setModal] = useState(null);
+    useEffect(() => {
+        if (modal) {
+        }
+    }, [modal]);
 
     useEffect(() => {
         if (busqueda.trim() !== "") {
@@ -23,6 +28,8 @@ const ContextIncioProvider = ({ children }) => {
     return (
         <ContextInicio.Provider
             value={{
+                modal,
+                setModal,
                 paginaActual,
                 busqueda,
                 setPaginaActual,

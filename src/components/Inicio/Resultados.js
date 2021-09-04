@@ -7,8 +7,15 @@ const SubContenedor = styled.div`
     width: 90%;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(auto, 200px);
     gap: 10px;
-    grid-auto-rows: minmax(100px, 200px);
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 480px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    /* grid-auto-rows: minmax(100px, 200px); */
 `;
 const Alerta = styled.p`
     margin: 0 auto;
@@ -41,13 +48,19 @@ const DivButtons = styled.div`
     justify-content: space-evenly;
     align-items: center;
 `;
+const Span = styled.span`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+`;
 const Resultados = ({ estilosSections }) => {
     const [totalPaginas, setTotalPaginas] = useState(null);
     const { setUrl, resultados, busqueda, paginaActual, setPaginaActual } =
         useContext(ContextInicio);
     useEffect(() => {
         if (resultados) {
-            setTotalPaginas(resultados.totalHits);
+            setTotalPaginas(Math.ceil(resultados.totalHits / 20));
         }
     }, [resultados]);
     const handleClick = (e) => {
@@ -66,9 +79,14 @@ const Resultados = ({ estilosSections }) => {
                 }`
             );
         }
+        const resultados = document.querySelector("#resultados");
+        let optionsIntoView = {
+            behavior: "smooth",
+        };
+        resultados.scrollIntoView(optionsIntoView);
     };
     return (
-        <section style={estilosSections}>
+        <section id="resultados" style={estilosSections}>
             <h2>{busqueda && `Resultados de ${busqueda}`}</h2>
             {resultados &&
                 (resultados.total === 0 ? (
@@ -84,10 +102,14 @@ const Resultados = ({ estilosSections }) => {
                             {paginaActual !== 1 && (
                                 <Button onClick={handleClick}>Anterior</Button>
                             )}
-                            {totalPaginas / 20 !== paginaActual && (
+
+                            {totalPaginas !== paginaActual && (
                                 <Button onClick={handleClick}>Siguiente</Button>
                             )}
                         </DivButtons>
+                        <Span className="span-paginas">
+                            pagina {paginaActual} de {totalPaginas}
+                        </Span>
                     </>
                 ))}
         </section>

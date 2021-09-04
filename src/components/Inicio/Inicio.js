@@ -1,21 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import Presentacion from "./Presentacion";
-import ContextIncioProvider from "./ContextIncio";
+import { ContextInicio } from "./ContextIncio";
 import Resultados from "./Resultados";
 import "./styleInicio.scss";
+import ModalImg from "./ModalImg";
 let estilosSections = {
     padding: "1rem 0",
     backgroundColor: "#cadffb",
 };
-// const apiKey = "20184489-7f6952a13cf5ddb9d367f5d16";
 
 const Inicio = () => {
+    const { resultados, modal } = useContext(ContextInicio);
+
     return (
         <>
-            <ContextIncioProvider>
-                <Presentacion estilosSections={estilosSections} />
-                <Resultados estilosSections={estilosSections} />
-            </ContextIncioProvider>
+            <Presentacion estilosSections={estilosSections} />
+            {resultados && <Resultados estilosSections={estilosSections} />}
+            {modal && <ModalImg />}
         </>
     );
 };
