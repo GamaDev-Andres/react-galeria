@@ -4,6 +4,7 @@
 *::after,
 *::before {
     box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
 }
 #root {
     min-height: 100vh;
@@ -12,13 +13,14 @@
 body {
     margin: 0;
     min-height: 100vh;
+    color: #e2e2e2;
 }
 .active {
     border-bottom: 2px solid white;
 }
 /* ESTILOS HEADER */
 .header {
-    background-color: #002973;
+    background-color: #00000a;
     min-width: 100%;
     padding: 0.5rem 0;
     display: flex;
@@ -27,7 +29,7 @@ body {
 /* ESTILOS LINKS */
 .navLinks {
     text-decoration: none;
-    color: white;
+    color: #e2e2e2;
 }
 
 h1,
@@ -38,4 +40,21 @@ h3 {
 input {
     outline: none;
     border: 0;
+}
+button {
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    box-shadow: none;
+    cursor: pointer;
+    background-color: #8686a6;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #e2e2e2;
+}
+button:hover {
+    color: #bdbaba;
+    transition: all 0.3s ease;
+    background-color: #5d5e76;
+    box-shadow: 1px 1px 3px #e2e2e2, -1px -1px 3px #e2e2e2;
 }

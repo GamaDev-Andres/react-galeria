@@ -7,10 +7,7 @@ const ContextIncioProvider = ({ children }) => {
     const [url, setUrl] = useState(null);
     const [paginaActual, setPaginaActual] = useState(1);
     const [modal, setModal] = useState(null);
-    useEffect(() => {
-        if (modal) {
-        }
-    }, [modal]);
+    const [formAlbum, setFormAlbum] = useState(null);
 
     useEffect(() => {
         if (busqueda.trim() !== "") {
@@ -36,6 +33,8 @@ const ContextIncioProvider = ({ children }) => {
                 setUrl,
                 setBusqueda,
                 resultados,
+                setFormAlbum,
+                formAlbum,
             }}
         >
             {children}
