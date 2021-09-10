@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ContextInicio } from "../Inicio/ContextIncio";
@@ -27,6 +26,24 @@ const Container = styled.main`
                 margin: 10px 0;
             }
         }
+        a {
+            color: #e2e2e2;
+            display: inline-block;
+            border-radius: 5px;
+            padding: 0.5rem 1rem;
+            background-color: #8686a6;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #e2e2e2;
+            text-decoration: none;
+
+            &:hover {
+                color: #bdbaba;
+                transition: all 0.3s ease;
+                background-color: #5d5e76;
+                box-shadow: 1px 1px 3px #e2e2e2, -1px -1px 3px #e2e2e2;
+            }
+        }
         @media (max-width: 768px) {
             width: 90%;
         }
@@ -51,33 +68,41 @@ const Error = styled.p`
     color: #e2e2e2;
     text-align: center;
 `;
+const Mensaje = styled(Error)`
+    background-color: #0afc0a;
+`;
 const CAlbum = () => {
     const [form, setForm] = useState(initialDataForm);
     const [error, setError] = useState(false);
-    const { setFormAlbum, formAlbum } = useContext(ContextInicio);
+    const [mensaje, setMensaje] = useState(false);
+    const { setFormAlbum } = useContext(ContextInicio);
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
     const handleClick = () => {
         if (!form.descripcion || !form.nameAlbum) {
             setError(true);
+            setTimeout(() => {
+                setError(false);
+            }, 3000);
+            return;
         }
         setError(false);
         setFormAlbum(form);
         setForm(initialDataForm);
-        // window.location.pathname = "/galeria";
+        setMensaje(true);
+        setTimeout(() => {
+            setMensaje(false);
+        }, 3000);
     };
     return (
         <Container>
             <div>
-                <button
-                    onClick={() => {
-                        window.location.pathname = "/galeria";
-                    }}
-                >
+                <Link exact="true" to="/galeria">
                     Volver
-                </button>
+                </Link>
                 <h2>Crea tu album</h2>
+                {mensaje && <Mensaje>Se ha creado correctamente</Mensaje>}
                 <form>
                     <label htmlFor="name-album">Nombre del album</label>
                     <Input
@@ -101,9 +126,10 @@ const CAlbum = () => {
                         rows="5"
                         maxLength="100"
                     ></textarea>
-                    <Link onClick={handleClick} exact to="/galeria">
+                    <button type="button" onClick={handleClick} className="btn">
                         Crear
-                    </Link>
+                    </button>
+
                     {error && <Error>Todos los campos son obligatorios</Error>}
                 </form>
             </div>

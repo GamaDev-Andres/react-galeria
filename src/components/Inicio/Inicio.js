@@ -6,7 +6,7 @@ import "./styleInicio.scss";
 import ModalImg from "./ModalImg";
 let estilosSections = {
     padding: "1rem 0",
-    backgroundColor: "#cadffb",
+    backgroundColor: "#1a1c24",
 };
 
 const Inicio = () => {

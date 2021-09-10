@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ContextInicio } from "../Inicio/ContextIncio";
 import Albums from "./Albums";
 const Presentacion = styled.section`
     width: 100%;
@@ -23,7 +22,6 @@ const SubContenedor = styled.div`
         background-color: #8686a6;
         font-weight: 700;
         font-size: 1rem;
-        color: #e2e2e2;
         text-decoration: none;
 
         &:hover {
@@ -34,20 +32,8 @@ const SubContenedor = styled.div`
         }
     }
 `;
-const initialDataAlbumes = [
-    {
-        nameAlbum: "Pixaby",
-        descripcion: "Fotos favoritas escogidas de la pagina de inicio",
-    },
-];
+
 const Galeria = () => {
-    const [albumes, setAlbumes] = useState(initialDataAlbumes);
-    const { formAlbum } = useContext(ContextInicio);
-    useEffect(() => {
-        if (formAlbum) {
-            setAlbumes([...albumes, formAlbum]);
-        }
-    }, [formAlbum]);
     return (
         <>
             <Presentacion id="presentacion">
@@ -63,7 +49,7 @@ const Galeria = () => {
                         en donde su objetivo principal es agregar diferentes
                         funcionalidades asemejando un proyecto producto real.
                     </p>
-                    <Link exact to="/creacion-album">
+                    <Link exact="true" to="/creacion-album">
                         Crear album
                     </Link>
                 </SubContenedor>

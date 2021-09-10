@@ -4,7 +4,7 @@ import styled from "styled-components";
 const H1 = styled.h1`
     margin: 0;
     text-align: center;
-    color: white;
+    color: #e2e2e2;
     font-size: 2rem;
 `;
 const Nav = styled.nav`

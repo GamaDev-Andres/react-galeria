@@ -7,7 +7,7 @@ const SubContenedor = styled.div`
     gap: 2rem;
     margin: 0 auto;
     width: 90%;
-    color: black;
+    color: #e2e2e2;
     @media (max-width: 780px) {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr 1fr;

@@ -1,6 +1,12 @@
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
 export const ContextInicio = createContext();
+const initialDataAlbumes = [
+    {
+        nameAlbum: "Pixaby",
+        descripcion: "Fotos favoritas escogidas de la pagina de inicio",
+    },
+];
 const ContextIncioProvider = ({ children }) => {
     const [busqueda, setBusqueda] = useState("");
     const [resultados, setResultados] = useState(null);
@@ -8,6 +14,12 @@ const ContextIncioProvider = ({ children }) => {
     const [paginaActual, setPaginaActual] = useState(1);
     const [modal, setModal] = useState(null);
     const [formAlbum, setFormAlbum] = useState(null);
+    const [albumes, setAlbumes] = useState(initialDataAlbumes);
+    useEffect(() => {
+        if (formAlbum) {
+            setAlbumes([...albumes, formAlbum]);
+        }
+    }, [formAlbum]);
 
     useEffect(() => {
         if (busqueda.trim() !== "") {
@@ -35,6 +47,8 @@ const ContextIncioProvider = ({ children }) => {
                 resultados,
                 setFormAlbum,
                 formAlbum,
+                albumes,
+                setAlbumes,
             }}
         >
             {children}

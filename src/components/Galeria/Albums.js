@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { ContextInicio } from "../Inicio/ContextIncio";
 import Album from "./Album";
 const AlbumsContainer = styled.section`
     width: 100%;
@@ -9,9 +10,18 @@ const AlbumsContainer = styled.section`
     flex-direction: column;
 `;
 const Albums = () => {
+    const { albumes, setAlbumes } = useContext(ContextInicio);
+
     return (
         <AlbumsContainer id="albums">
-            <Album id="album-pixaby" />
+            {albumes.map((album) => (
+                <Album
+                    datos={album}
+                    setAlbumes={setAlbumes}
+                    albumes={albumes}
+                    key={album.nameAlbum}
+                />
+            ))}
         </AlbumsContainer>
     );
 };

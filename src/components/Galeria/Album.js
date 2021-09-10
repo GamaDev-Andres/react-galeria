@@ -34,15 +34,24 @@ const ContainerFotos = styled.div`
         grid-template-columns: repeat(2, 1fr);
     }
 `;
-const Album = () => {
+const Album = ({ datos, setAlbumes, albumes }) => {
+    const handleDelete = () => {
+        let newAlbums = albumes.filter(
+            (album) => album.nameAlbum !== datos.nameAlbum
+        );
+        setAlbumes(newAlbums);
+    };
     return (
-        <Container className="album">
+        <Container id={datos.nameAlbum} className="album">
             <div className="sub-container-album">
-                <H3>Album : </H3>
+                <H3>Album :{datos.nameAlbum}</H3>
+                <p>{datos.descripcion}</p>
                 <DivButtons>
                     <button className="btn tomar">Tomar foto</button>
                     <button className="btn add">Agregar foto</button>
-                    <button className="btn delete">Eliminar album</button>
+                    <button className="btn delete" onClick={handleDelete}>
+                        Eliminar album
+                    </button>
                     <button className="btn rename">Renombrar album</button>
                 </DivButtons>
                 <ContainerFotos></ContainerFotos>
