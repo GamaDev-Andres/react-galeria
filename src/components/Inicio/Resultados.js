@@ -58,9 +58,15 @@ const Resultados = ({ estilosSections }) => {
     const [totalPaginas, setTotalPaginas] = useState(null);
     const { setUrl, resultados, busqueda, paginaActual, setPaginaActual } =
         useContext(ContextInicio);
+    // useEffect(() => {
+    //     const $resultados = document.querySelector("#resultados");
+    //     $resultados.scrollIntoView({ behavior: "smooth" });
+    // }, []);
     useEffect(() => {
         if (resultados) {
             setTotalPaginas(Math.ceil(resultados.totalHits / 20));
+            const $resultados = document.querySelector("#resultados");
+            $resultados.scrollIntoView({ behavior: "smooth" });
         }
     }, [resultados]);
     const handleClick = (e) => {

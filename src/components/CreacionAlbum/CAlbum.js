@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ContextInicio } from "../Inicio/ContextIncio";
+import { v4 as uuidv4 } from "uuid";
 const Container = styled.main`
     width: 100%;
     height: 100vh;
@@ -56,10 +57,6 @@ const Input = styled.input`
     margin: 10px 0;
 `;
 
-const initialDataForm = {
-    nameAlbum: "",
-    descripcion: "",
-};
 const Error = styled.p`
     padding: 1rem;
     font-size: 1.2rem;
@@ -71,13 +68,23 @@ const Error = styled.p`
 const Mensaje = styled(Error)`
     background-color: #0afc0a;
 `;
+const initialDataForm = {
+    nameAlbum: "",
+    descripcion: "",
+};
 const CAlbum = () => {
     const [form, setForm] = useState(initialDataForm);
     const [error, setError] = useState(false);
     const [mensaje, setMensaje] = useState(false);
     const { setFormAlbum } = useContext(ContextInicio);
+    //me evita errores , al salir del componente sin esperar el setimeout del mensaje
+    useEffect(() => {
+        return () => {
+            setForm(null);
+        };
+    }, []);
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        setForm({ ...form, [e.target.name]: e.target.value, id: uuidv4() });
     };
     const handleClick = () => {
         if (!form.descripcion || !form.nameAlbum) {

@@ -13,9 +13,16 @@ const SubContenedor = styled.div`
         grid-template-rows: 1fr 1fr;
     }
 `;
+const Section = styled.section`
+    min-height: calc(100vh - 70px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 const Presentacion = ({ estilosSections }) => {
     return (
-        <section style={estilosSections} className="contenedor-presentacion">
+        <Section style={estilosSections} className="contenedor-presentacion">
             <SubContenedor className="sub-contenedor-inicio">
                 <div className="descripcion">
                     <h2>Bienvenido a MisFotos</h2>
@@ -31,7 +38,7 @@ const Presentacion = ({ estilosSections }) => {
                 </div>
                 <FormBuscador />
             </SubContenedor>
-        </section>
+        </Section>
     );
 };
 

@@ -5,6 +5,7 @@ const initialDataAlbumes = [
     {
         nameAlbum: "Pixaby",
         descripcion: "Fotos favoritas escogidas de la pagina de inicio",
+        id: "pixaby",
     },
 ];
 const ContextIncioProvider = ({ children }) => {
@@ -15,6 +16,7 @@ const ContextIncioProvider = ({ children }) => {
     const [modal, setModal] = useState(null);
     const [formAlbum, setFormAlbum] = useState(null);
     const [albumes, setAlbumes] = useState(initialDataAlbumes);
+    const [fotosPixaby, setFotosPixaby] = useState([]);
     useEffect(() => {
         if (formAlbum) {
             setAlbumes([...albumes, formAlbum]);
@@ -49,6 +51,8 @@ const ContextIncioProvider = ({ children }) => {
                 formAlbum,
                 albumes,
                 setAlbumes,
+                setFotosPixaby,
+                fotosPixaby,
             }}
         >
             {children}

@@ -49,7 +49,7 @@ const Button = styled.button`
     }
 `;
 const Card = ({ foto }) => {
-    const { setModal } = useContext(ContextInicio);
+    const { setModal, setFotosPixaby, fotosPixaby } = useContext(ContextInicio);
     const handleClick = (e) => {
         const img = e.target.parentElement.nextSibling;
         setModal(img.getAttribute("dataimg"));
@@ -58,7 +58,14 @@ const Card = ({ foto }) => {
         <Contenedor className="card">
             <DivButtons>
                 <Button onClick={handleClick}>Ver</Button>
-                <Button id={foto.id}>Agregar</Button>
+                <Button
+                    id={foto.id}
+                    onClick={() =>
+                        setFotosPixaby([...fotosPixaby, foto.previewURL])
+                    }
+                >
+                    Agregar
+                </Button>
             </DivButtons>
             <img
                 src={foto.previewURL}

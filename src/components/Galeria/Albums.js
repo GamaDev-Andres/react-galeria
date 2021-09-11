@@ -19,7 +19,7 @@ const Albums = () => {
                     datos={album}
                     setAlbumes={setAlbumes}
                     albumes={albumes}
-                    key={album.nameAlbum}
+                    key={album.id}
                 />
             ))}
         </AlbumsContainer>

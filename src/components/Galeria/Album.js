@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import { ContextInicio } from "../Inicio/ContextIncio";
+import Foto from "./Foto";
+import { v4 as uuidv4 } from "uuid";
+
 const H3 = styled.h3`
     text-align: start;
     margin-top: 0;
@@ -14,6 +18,10 @@ const Container = styled.div`
     .sub-container-album {
         margin: 0 auto;
         width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     }
 `;
 const DivButtons = styled.div`
@@ -27,6 +35,7 @@ const ContainerFotos = styled.div`
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: minmax(auto, 200px);
     gap: 10px;
+    padding: 1rem 0;
     @media (max-width: 768px) {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -34,17 +43,24 @@ const ContainerFotos = styled.div`
         grid-template-columns: repeat(2, 1fr);
     }
 `;
+
 const Album = ({ datos, setAlbumes, albumes }) => {
+    const { fotosPixaby } = useContext(ContextInicio);
+    const [verMas, setVerMas] = useState(null);
     const handleDelete = () => {
-        let newAlbums = albumes.filter(
-            (album) => album.nameAlbum !== datos.nameAlbum
-        );
+        let newAlbums = albumes.filter((album) => album.id !== datos.id);
         setAlbumes(newAlbums);
     };
+    useEffect(() => {
+        if (fotosPixaby.length > 8) {
+            setVerMas(false);
+        }
+    }, [fotosPixaby]);
+
     return (
-        <Container id={datos.nameAlbum} className="album">
+        <Container id={datos.id} className="album">
             <div className="sub-container-album">
-                <H3>Album :{datos.nameAlbum}</H3>
+                <H3>Album : {datos.nameAlbum}</H3>
                 <p>{datos.descripcion}</p>
                 <DivButtons>
                     <button className="btn tomar">Tomar foto</button>
@@ -54,7 +70,23 @@ const Album = ({ datos, setAlbumes, albumes }) => {
                     </button>
                     <button className="btn rename">Renombrar album</button>
                 </DivButtons>
-                <ContainerFotos></ContainerFotos>
+                <ContainerFotos>
+                    {datos.id === "pixaby" &&
+                        (verMas ? fotosPixaby : fotosPixaby.slice(0, 8)).map(
+                            (src) => (
+                                <Foto
+                                    key={uuidv4()}
+                                    src={src}
+                                    nameAlbum={datos.nameAlbum}
+                                />
+                            )
+                        )}
+                </ContainerFotos>
+                {!verMas ? (
+                    <button onClick={() => setVerMas(true)}>ver mas</button>
+                ) : (
+                    <button onClick={() => setVerMas(false)}>ver menos</button>
+                )}
             </div>
         </Container>
     );
