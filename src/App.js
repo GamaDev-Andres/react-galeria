@@ -6,6 +6,8 @@ import Header from "./components/Header";
 import ContextIncioProvider from "./components/Inicio/ContextIncio";
 import Inicio from "./components/Inicio/Inicio";
 import MenuResponsive from "./components/MenuResponsive";
+import "./components/Inicio/styleInicio.scss";
+
 function App() {
     return (
         <>

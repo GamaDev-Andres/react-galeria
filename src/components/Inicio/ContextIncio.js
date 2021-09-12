@@ -13,7 +13,7 @@ const ContextIncioProvider = ({ children }) => {
     const [resultados, setResultados] = useState(null);
     const [url, setUrl] = useState(null);
     const [paginaActual, setPaginaActual] = useState(1);
-    const [modal, setModal] = useState(null);
+    const [modal, setModal] = useState({ inicio: "", galeria: "" });
     const [formAlbum, setFormAlbum] = useState(null);
     const [albumes, setAlbumes] = useState(initialDataAlbumes);
     const [fotosPixaby, setFotosPixaby] = useState([]);

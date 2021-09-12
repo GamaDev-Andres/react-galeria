@@ -1,23 +1,9 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { ContextInicio } from "./ContextIncio";
-const Modal = styled.div`
-    z-index: 99;
-    position: fixed;
-    top: 0;
 
-    width: 100%;
-    height: 100vh;
-
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    flex-direction: column;
-    img {
-        max-width: 100%;
-    }
+const Img = styled.img`
+    max-width: 100%;
 `;
 const Button = styled.button`
     padding: 8px;
@@ -30,16 +16,16 @@ const Button = styled.button`
         color: #ccc;
     }
 `;
-const ModalImg = () => {
-    const { setModal, modal, busqueda } = useContext(ContextInicio);
+const ModalImg = ({ pagina }) => {
+    const { setModal, modal } = useContext(ContextInicio);
 
     return (
-        <Modal onClick={() => setModal("")}>
+        <div className="modal" onClick={() => setModal("")}>
             <Button onClick={() => setModal("")}>
                 <i className="fas fa-times-circle"></i>
             </Button>
-            <img src={modal} alt={"imagen de " + busqueda} />
-        </Modal>
+            <Img src={modal[pagina]} alt="imagen" />
+        </div>
     );
 };
 

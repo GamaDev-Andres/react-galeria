@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import Presentacion from "./Presentacion";
 import { ContextInicio } from "./ContextIncio";
 import Resultados from "./Resultados";
-import "./styleInicio.scss";
 import ModalImg from "./ModalImg";
 let estilosSections = {
     padding: "1rem 0",
@@ -16,7 +15,7 @@ const Inicio = () => {
         <>
             <Presentacion estilosSections={estilosSections} />
             {resultados && <Resultados estilosSections={estilosSections} />}
-            {modal && <ModalImg />}
+            {modal.inicio && <ModalImg pagina="inicio" />}
         </>
     );
 };

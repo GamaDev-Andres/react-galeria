@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ContextInicio } from "../Inicio/ContextIncio";
 import Foto from "./Foto";
 import { v4 as uuidv4 } from "uuid";
+import TomarFoto from "./TomarFoto";
 
 const H3 = styled.h3`
     text-align: start;
@@ -47,6 +48,9 @@ const ContainerFotos = styled.div`
 const Album = ({ datos, setAlbumes, albumes }) => {
     const { fotosPixaby } = useContext(ContextInicio);
     const [verMas, setVerMas] = useState(null);
+    const [arrFotos, setArrFotos] = useState([]);
+    const [tomandoFoto, setTomandoFoto] = useState(false);
+
     const handleDelete = () => {
         let newAlbums = albumes.filter((album) => album.id !== datos.id);
         setAlbumes(newAlbums);
@@ -59,11 +63,23 @@ const Album = ({ datos, setAlbumes, albumes }) => {
 
     return (
         <Container id={datos.id} className="album">
+            {tomandoFoto && (
+                <TomarFoto
+                    arrFotos={arrFotos}
+                    setArrFotos={setArrFotos}
+                    setTomandoFoto={setTomandoFoto}
+                />
+            )}
             <div className="sub-container-album">
                 <H3>Album : {datos.nameAlbum}</H3>
                 <p>{datos.descripcion}</p>
                 <DivButtons>
-                    <button className="btn tomar">Tomar foto</button>
+                    <button
+                        className="btn tomar"
+                        onClick={() => setTomandoFoto(true)}
+                    >
+                        Tomar foto
+                    </button>
                     <button className="btn add">Agregar foto</button>
                     <button className="btn delete" onClick={handleDelete}>
                         Eliminar album
@@ -81,10 +97,19 @@ const Album = ({ datos, setAlbumes, albumes }) => {
                                 />
                             )
                         )}
+                    {arrFotos.length > 0 &&
+                        arrFotos.map((foto) => (
+                            <Foto
+                                key={uuidv4()}
+                                src={foto.data}
+                                nameAlbum={datos.nameAlbum}
+                            />
+                        ))}
                 </ContainerFotos>
-                {!verMas ? (
+                {!verMas && fotosPixaby.length > 8 && (
                     <button onClick={() => setVerMas(true)}>ver mas</button>
-                ) : (
+                )}
+                {verMas && (
                     <button onClick={() => setVerMas(false)}>ver menos</button>
                 )}
             </div>

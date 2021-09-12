@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { ContextInicio } from "../Inicio/ContextIncio";
+import ModalImg from "../Inicio/ModalImg";
 import Albums from "./Albums";
 const Presentacion = styled.section`
     width: 100%;
@@ -34,6 +36,7 @@ const SubContenedor = styled.div`
 `;
 
 const Galeria = () => {
+    const { modal } = useContext(ContextInicio);
     return (
         <>
             <Presentacion id="presentacion">
@@ -55,6 +58,7 @@ const Galeria = () => {
                 </SubContenedor>
             </Presentacion>
             <Albums />
+            {modal.galeria && <ModalImg pagina="galeria" />}
         </>
     );
 };

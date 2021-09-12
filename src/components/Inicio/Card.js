@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { ContextInicio } from "./ContextIncio";
+import { v4 as uuidv4 } from "uuid";
 
 const Contenedor = styled.div`
     position: relative;
@@ -52,7 +53,7 @@ const Card = ({ foto }) => {
     const { setModal, setFotosPixaby, fotosPixaby } = useContext(ContextInicio);
     const handleClick = (e) => {
         const img = e.target.parentElement.nextSibling;
-        setModal(img.getAttribute("dataimg"));
+        setModal({ inicio: img.getAttribute("dataimg"), galeria: "" });
     };
     return (
         <Contenedor className="card">
@@ -61,7 +62,14 @@ const Card = ({ foto }) => {
                 <Button
                     id={foto.id}
                     onClick={() =>
-                        setFotosPixaby([...fotosPixaby, foto.previewURL])
+                        setFotosPixaby([
+                            ...fotosPixaby,
+                            {
+                                normal: foto.previewURL,
+                                grande: foto.webformatURL,
+                                id: uuidv4(),
+                            },
+                        ])
                     }
                 >
                     Agregar
