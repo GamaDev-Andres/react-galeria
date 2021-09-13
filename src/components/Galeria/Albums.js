@@ -1,8 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { ContextInicio } from "../Inicio/ContextIncio";
 import Album from "./Album";
-import TomarFoto from "./TomarFoto";
 const AlbumsContainer = styled.section`
     width: 100%;
     display: flex;

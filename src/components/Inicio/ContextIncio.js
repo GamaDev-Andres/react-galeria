@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 export const ContextInicio = createContext();
 const initialDataAlbumes = [
     {
@@ -17,6 +18,16 @@ const ContextIncioProvider = ({ children }) => {
     const [formAlbum, setFormAlbum] = useState(null);
     const [albumes, setAlbumes] = useState(initialDataAlbumes);
     const [fotosPixaby, setFotosPixaby] = useState([]);
+    const [user, setUser] = useState(null);
+    useEffect(() => {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (usuario) => {
+            if (usuario) {
+                setUser(usuario);
+                console.log(usuario);
+            }
+        });
+    }, []);
     useEffect(() => {
         if (formAlbum) {
             setAlbumes([...albumes, formAlbum]);
@@ -53,6 +64,8 @@ const ContextIncioProvider = ({ children }) => {
                 setAlbumes,
                 setFotosPixaby,
                 fotosPixaby,
+                setUser,
+                user,
             }}
         >
             {children}

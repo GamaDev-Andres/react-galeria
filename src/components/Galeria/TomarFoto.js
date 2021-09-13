@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import { ContextInicio } from "../Inicio/ContextIncio";
 
 const Video = styled.video`
     @media (max-width: 768px) {
@@ -20,9 +21,10 @@ const Div = styled.div`
         height: auto;
     }
 `;
-const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos }) => {
+const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos, idAlbum }) => {
     const [stream, setStream] = useState(null);
     const [fotoTomada, setFotoTomada] = useState(null);
+    const { fotosPixaby, setFotosPixaby } = useContext(ContextInicio);
 
     useEffect(() => {
         const video = document.querySelector("#video");
@@ -60,7 +62,11 @@ const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos }) => {
         const img = document.createElement("img");
         img.src = data;
         containerFoto.appendChild(img);
-        setArrFotos([...arrFotos, { data, id: uuidv4() }]);
+        if (idAlbum !== "pixaby") {
+            setArrFotos([...arrFotos, { data, id: uuidv4() }]);
+        } else {
+            setFotosPixaby([...fotosPixaby, { data, id: uuidv4() }]);
+        }
     };
 
     //para el streaming
@@ -77,7 +83,13 @@ const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos }) => {
             <Div id="container-foto">
                 {!fotoTomada && <Video autoPlay={true} id="video"></Video>}
             </Div>
-            <button type="button" className="btn" onClick={tomarFoto}>
+
+            <button
+                disabled={fotoTomada ? true : false}
+                type="button"
+                className="btn"
+                onClick={tomarFoto}
+            >
                 <i className="fas fa-camera"></i>
             </button>
         </div>

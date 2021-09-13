@@ -4,3 +4,17 @@
         display: none;
     }
 }
+.enlaces-sesion {
+    &.inicio {
+        background-color: #007bff;
+    }
+    &.cerrar {
+        background-color: #dc3545;
+    }
+    display: block;
+    text-decoration: none;
+    color: #e2e2e2;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    box-shadow: none;
+}

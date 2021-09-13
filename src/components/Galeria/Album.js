@@ -46,7 +46,7 @@ const ContainerFotos = styled.div`
 `;
 
 const Album = ({ datos, setAlbumes, albumes }) => {
-    const { fotosPixaby } = useContext(ContextInicio);
+    const { fotosPixaby, setFotosPixaby } = useContext(ContextInicio);
     const [verMas, setVerMas] = useState(null);
     const [arrFotos, setArrFotos] = useState([]);
     const [tomandoFoto, setTomandoFoto] = useState(false);
@@ -66,6 +66,7 @@ const Album = ({ datos, setAlbumes, albumes }) => {
             {tomandoFoto && (
                 <TomarFoto
                     arrFotos={arrFotos}
+                    idAlbum={datos.id}
                     setArrFotos={setArrFotos}
                     setTomandoFoto={setTomandoFoto}
                 />
@@ -93,6 +94,10 @@ const Album = ({ datos, setAlbumes, albumes }) => {
                                 <Foto
                                     key={uuidv4()}
                                     src={src}
+                                    datos={{
+                                        arr: fotosPixaby,
+                                        set: setFotosPixaby,
+                                    }}
                                     nameAlbum={datos.nameAlbum}
                                 />
                             )
@@ -101,7 +106,11 @@ const Album = ({ datos, setAlbumes, albumes }) => {
                         arrFotos.map((foto) => (
                             <Foto
                                 key={uuidv4()}
-                                src={foto.data}
+                                src={foto}
+                                datos={{
+                                    arr: arrFotos,
+                                    set: setArrFotos,
+                                }}
                                 nameAlbum={datos.nameAlbum}
                             />
                         ))}

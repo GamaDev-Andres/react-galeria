@@ -47,14 +47,14 @@ const Button = styled.button`
         color: #ccc;
     }
 `;
-const Foto = ({ src, nameAlbum }) => {
-    const { setModal, setFotosPixaby, fotosPixaby } = useContext(ContextInicio);
+const Foto = ({ src, nameAlbum, datos }) => {
+    const { setModal } = useContext(ContextInicio);
     const handleClick = () => {
-        setModal({ galeria: src.grande || src, inicio: "" });
+        setModal({ galeria: src.grande || src.data, inicio: "" });
     };
     const handleDelete = () => {
-        let newFotos = fotosPixaby.filter((objFoto) => objFoto.id !== src.id);
-        setFotosPixaby(newFotos);
+        let newFotos = datos.arr.filter((objFoto) => objFoto.id !== src.id);
+        datos.set(newFotos);
     };
     return (
         <Div>
@@ -62,7 +62,10 @@ const Foto = ({ src, nameAlbum }) => {
                 <Button onClick={handleClick}>Ver</Button>
                 <Button onClick={handleDelete}>Eliminar</Button>
             </DivButtons>
-            <img src={src || src.normal} alt={"foto album de " + nameAlbum} />
+            <img
+                src={src.normal || src.data}
+                alt={"foto album de " + nameAlbum}
+            />
         </Div>
     );
 };

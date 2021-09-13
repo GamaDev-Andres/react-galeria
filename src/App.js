@@ -7,6 +7,9 @@ import ContextIncioProvider from "./components/Inicio/ContextIncio";
 import Inicio from "./components/Inicio/Inicio";
 import MenuResponsive from "./components/MenuResponsive";
 import "./components/Inicio/styleInicio.scss";
+import Login from "./components/Login/Login";
+import NuevaCuenta from "./components/Login/NuevaCuenta";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
     return (
@@ -15,12 +18,22 @@ function App() {
                 <ContextIncioProvider>
                     <Header />
                     <Switch>
-                        <Route exact path="/" component={Inicio} />
-                        <Route exact path="/galeria" component={Galeria} />
-                        <Route
+                        <PrivateRoute exact path="/" component={Inicio} />
+                        <PrivateRoute
+                            exact
+                            path="/galeria"
+                            component={Galeria}
+                        />
+                        <PrivateRoute
                             exact
                             path="/creacion-album"
                             component={CAlbum}
+                        />
+                        <Route exact path="/login" component={Login} />
+                        <Route
+                            exact
+                            path="/nueva-cuenta"
+                            component={NuevaCuenta}
                         />
                     </Switch>
                     <MenuResponsive />
