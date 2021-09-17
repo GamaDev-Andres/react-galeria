@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Card from "./Card";
-import { ContextInicio } from "./ContextIncio";
+import { ContextInicio } from "../ContextIncio";
 const SubContenedor = styled.div`
     margin: 0 auto;
     width: 90%;

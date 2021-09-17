@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 // import { auth } from "../../environment/evironment";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import useFirebase from "../../hooks/useFirebase";
 
 // import from ""
 
@@ -15,6 +16,7 @@ const Alerta = styled.p`
     color: white !important;
 `;
 const NuevaCuenta = () => {
+    const { createDoc } = useFirebase();
     const [alerta, setAlerta] = useState(false);
     const [user, setUser] = useState({
         email: "",
@@ -25,7 +27,7 @@ const NuevaCuenta = () => {
     let history = useHistory();
 
     //submit
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validar que no haya campos vacios
@@ -43,8 +45,8 @@ const NuevaCuenta = () => {
         }
 
         // Pasarlo al action
-        //  iniciarSesion({ email, contraseña });
         const auth = getAuth();
+
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 let user = userCredential.user;
@@ -54,8 +56,9 @@ const NuevaCuenta = () => {
                     confirmPassword: "",
                 });
                 setAlerta(null);
+
+                createDoc(user);
                 history.push("/");
-                console.log(user);
             })
             .catch((error) => {
                 if (error.code === "auth/weak-password") {
@@ -69,10 +72,8 @@ const NuevaCuenta = () => {
                 if (error.code === "auth/email-already-in-use") {
                     setAlerta("Email ya registrado, intenta con oto");
                 }
-                console.log(error.code);
-                console.log(error.message);
+                return null;
             });
-        // history.push("/");
     };
     const handleChange = (e) => {
         setUser({

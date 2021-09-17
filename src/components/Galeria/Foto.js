@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { ContextInicio } from "../Inicio/ContextIncio";
+import { ContextInicio } from "../ContextIncio";
 const Div = styled.div`
     position: relative;
 

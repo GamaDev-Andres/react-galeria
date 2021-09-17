@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ContextInicio } from "../Inicio/ContextIncio";
+import { ContextInicio } from "../ContextIncio";
 import { v4 as uuidv4 } from "uuid";
 const Container = styled.main`
     width: 100%;
@@ -71,12 +71,14 @@ const Mensaje = styled(Error)`
 const initialDataForm = {
     nameAlbum: "",
     descripcion: "",
+    fotos: [],
+    id: null,
 };
 const CAlbum = () => {
     const [form, setForm] = useState(initialDataForm);
     const [error, setError] = useState(false);
     const [mensaje, setMensaje] = useState(false);
-    const { setFormAlbum } = useContext(ContextInicio);
+    const { setFormAlbum, albumes } = useContext(ContextInicio);
     //me evita errores , al salir del componente sin esperar el setimeout del mensaje
     useEffect(() => {
         return () => {
@@ -84,14 +86,24 @@ const CAlbum = () => {
         };
     }, []);
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value, id: uuidv4() });
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value,
+            fotos: [],
+            id: uuidv4(),
+        });
     };
-    const handleClick = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         if (!form.descripcion || !form.nameAlbum) {
-            setError(true);
+            setError("todos los campos son obligatorios");
             setTimeout(() => {
                 setError(false);
             }, 3000);
+            return;
+        }
+        if (albumes.some((album) => album.nameAlbum === form.nameAlbum)) {
+            setError("Ya existe el nombre del album.");
             return;
         }
         setError(false);
@@ -133,11 +145,15 @@ const CAlbum = () => {
                         rows="5"
                         maxLength="100"
                     ></textarea>
-                    <button type="button" onClick={handleClick} className="btn">
+                    <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        className="btn"
+                    >
                         Crear
                     </button>
 
-                    {error && <Error>Todos los campos son obligatorios</Error>}
+                    {error && <Error>{error}</Error>}
                 </form>
             </div>
         </Container>

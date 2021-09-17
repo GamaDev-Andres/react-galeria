@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { ContextInicio } from "../components/Inicio/ContextIncio";
+import { ContextInicio } from "./ContextIncio";
 
 const H1 = styled.h1`
     margin: 0;

@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import { ContextInicio } from "../Inicio/ContextIncio";
+// import useFirebase from "../../hooks/useFirebase";
+// import { ContextInicio } from "../ContextIncio";
 
 const Video = styled.video`
     @media (max-width: 768px) {
@@ -24,7 +25,8 @@ const Div = styled.div`
 const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos, idAlbum }) => {
     const [stream, setStream] = useState(null);
     const [fotoTomada, setFotoTomada] = useState(null);
-    const { fotosPixaby, setFotosPixaby } = useContext(ContextInicio);
+    // const { albumes, setAlbumes, user } = useContext(ContextInicio);
+    // const { updateDocument } = useFirebase();
 
     useEffect(() => {
         const video = document.querySelector("#video");
@@ -56,17 +58,22 @@ const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos, idAlbum }) => {
         canvas.setAttribute("width", "600px");
         canvas.getContext("2d").drawImage(video, 0, 0, width, height);
         let data = canvas.toDataURL("image/png");
-        console.log(data);
+
         setFotoTomada(true);
         const containerFoto = document.querySelector("#container-foto");
         const img = document.createElement("img");
         img.src = data;
         containerFoto.appendChild(img);
-        if (idAlbum !== "pixaby") {
-            setArrFotos([...arrFotos, { data, id: uuidv4() }]);
-        } else {
-            setFotosPixaby([...fotosPixaby, { data, id: uuidv4() }]);
-        }
+        console.log("Tomarr foto , cambio que guarda:");
+        console.log([...arrFotos, { data, id: uuidv4() }]);
+        setArrFotos([...arrFotos, { data, id: uuidv4() }]);
+
+        // let newAlbums = albumes.map((album) =>
+        //     album.id === idAlbum ? { ...album, fotos: arrFotos } : album
+        // );
+        // setAlbumes(newAlbums);
+        // console.log("ACTUALIZANDO");
+        // console.log(newAlbums);
     };
 
     //para el streaming

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { ContextInicio } from "../Inicio/ContextIncio";
+
+import { ContextInicio } from "../ContextIncio";
 import Album from "./Album";
 const AlbumsContainer = styled.section`
     width: 100%;

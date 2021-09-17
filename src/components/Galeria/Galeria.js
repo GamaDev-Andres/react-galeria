@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { ContextInicio } from "../Inicio/ContextIncio";
+import { ContextInicio } from "../ContextIncio";
 import ModalImg from "../Inicio/ModalImg";
 import Albums from "./Albums";
 const Presentacion = styled.section`

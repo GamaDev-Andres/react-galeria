@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Presentacion from "./Presentacion";
-import { ContextInicio } from "./ContextIncio";
+import { ContextInicio } from "../ContextIncio";
 import Resultados from "./Resultados";
 import ModalImg from "./ModalImg";
 let estilosSections = {

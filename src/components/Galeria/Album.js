@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { ContextInicio } from "../Inicio/ContextIncio";
+import { ContextInicio } from "../ContextIncio";
 import Foto from "./Foto";
 import { v4 as uuidv4 } from "uuid";
 import TomarFoto from "./TomarFoto";
+import useFirebase from "../../hooks/useFirebase";
 
 const H3 = styled.h3`
     text-align: start;
@@ -46,20 +47,33 @@ const ContainerFotos = styled.div`
 `;
 
 const Album = ({ datos, setAlbumes, albumes }) => {
-    const { fotosPixaby, setFotosPixaby } = useContext(ContextInicio);
+    const { user } = useContext(ContextInicio);
     const [verMas, setVerMas] = useState(null);
-    const [arrFotos, setArrFotos] = useState([]);
+    console.log("Datos fotos");
+    console.log(datos.fotos);
+    const [arrFotos, setArrFotos] = useState(datos.fotos);
     const [tomandoFoto, setTomandoFoto] = useState(false);
-
+    const { updateDocument } = useFirebase();
     const handleDelete = () => {
         let newAlbums = albumes.filter((album) => album.id !== datos.id);
         setAlbumes(newAlbums);
     };
+
     useEffect(() => {
-        if (fotosPixaby.length > 8) {
+        if (arrFotos.length > 8) {
             setVerMas(false);
         }
-    }, [fotosPixaby]);
+        let newAlbums = albumes.map((album) =>
+            album.id !== datos.id ? album : { ...album, fotos: arrFotos }
+        );
+        console.log("cambios en arr fotos-newalbums");
+        console.log(newAlbums);
+        updateDocument(user, arrFotos, datos);
+        let newAlbumes = albumes.map((album) =>
+            album.id === datos.id ? { ...album, fotos: arrFotos } : album
+        );
+        setAlbumes(newAlbumes);
+    }, [arrFotos]);
 
     return (
         <Container id={datos.id} className="album">
@@ -88,34 +102,22 @@ const Album = ({ datos, setAlbumes, albumes }) => {
                     <button className="btn rename">Renombrar album</button>
                 </DivButtons>
                 <ContainerFotos>
-                    {datos.id === "pixaby" &&
-                        (verMas ? fotosPixaby : fotosPixaby.slice(0, 8)).map(
-                            (src) => (
+                    {arrFotos.length > 0 &&
+                        (verMas ? arrFotos : arrFotos.slice(0, 8)).map(
+                            (foto) => (
                                 <Foto
                                     key={uuidv4()}
-                                    src={src}
+                                    src={foto}
                                     datos={{
-                                        arr: fotosPixaby,
-                                        set: setFotosPixaby,
+                                        arr: arrFotos,
+                                        set: setArrFotos,
                                     }}
                                     nameAlbum={datos.nameAlbum}
                                 />
                             )
                         )}
-                    {arrFotos.length > 0 &&
-                        arrFotos.map((foto) => (
-                            <Foto
-                                key={uuidv4()}
-                                src={foto}
-                                datos={{
-                                    arr: arrFotos,
-                                    set: setArrFotos,
-                                }}
-                                nameAlbum={datos.nameAlbum}
-                            />
-                        ))}
                 </ContainerFotos>
-                {!verMas && fotosPixaby.length > 8 && (
+                {!verMas && arrFotos.length > 8 && (
                     <button onClick={() => setVerMas(true)}>ver mas</button>
                 )}
                 {verMas && (

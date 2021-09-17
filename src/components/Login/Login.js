@@ -50,7 +50,7 @@ const Login = () => {
                 setAlerta(null);
                 history.push("/");
 
-                console.log(user.email);
+                console.log(user.uid);
             })
             .catch((error) => {
                 console.log("error code ----" + error.code);

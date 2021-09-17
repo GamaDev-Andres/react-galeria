@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { ContextInicio } from "./ContextIncio";
+import { ContextInicio } from "../ContextIncio";
 const InputBuscador = styled.input`
     width: 100%;
     padding: 10px;

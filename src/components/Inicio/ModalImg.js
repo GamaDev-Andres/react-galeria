@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { ContextInicio } from "./ContextIncio";
+import { ContextInicio } from "../ContextIncio";
 
 const Img = styled.img`
     max-width: 100%;
