@@ -27,7 +27,7 @@ const ContextIncioProvider = ({ children }) => {
     //estado que maneja el la conexion de usuario , validando si inicio sesion o no
     const [user, setUser] = useState(null);
 
-    const { createDoc, createAlbum, updateDocument } = useFirebase();
+    const { createDoc, createAlbum } = useFirebase();
 
     //useeffect que obtiene los albums del usuario
     useEffect(() => {

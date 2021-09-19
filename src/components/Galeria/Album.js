@@ -46,8 +46,8 @@ const ContainerFotos = styled.div`
     }
 `;
 
-const Album = ({ datos, setAlbumes, albumes }) => {
-    const { user } = useContext(ContextInicio);
+const Album = ({ datos, setAlbumes }) => {
+    const { user, albumes } = useContext(ContextInicio);
     const [verMas, setVerMas] = useState(null);
     console.log("Datos fotos");
     console.log(datos.fotos);

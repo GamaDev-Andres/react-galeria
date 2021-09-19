@@ -1,6 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import { storage } from "../../environment/evironment";
+import { getDownloadURL, uploadString, ref } from "firebase/storage";
 // import useFirebase from "../../hooks/useFirebase";
 // import { ContextInicio } from "../ContextIncio";
 
@@ -64,9 +66,16 @@ const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos, idAlbum }) => {
         const img = document.createElement("img");
         img.src = data;
         containerFoto.appendChild(img);
-        console.log("Tomarr foto , cambio que guarda:");
-        console.log([...arrFotos, { data, id: uuidv4() }]);
-        setArrFotos([...arrFotos, { data, id: uuidv4() }]);
+        let idFoto = uuidv4();
+        const imagesRef = ref(storage, `imagenes-galeria/${idFoto}`);
+        uploadString(imagesRef, data, "data_url").then((snapshot) => {
+            console.log("archivo cargado");
+            console.log(snapshot);
+            getDownloadURL(imagesRef).then((rta) => {
+                console.log("URL DE LA FOTO ", rta);
+                setArrFotos([...arrFotos, { data: rta, id: idFoto }]);
+            });
+        });
 
         // let newAlbums = albumes.map((album) =>
         //     album.id === idAlbum ? { ...album, fotos: arrFotos } : album
