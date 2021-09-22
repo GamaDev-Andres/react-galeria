@@ -1,5 +1,11 @@
 import { deleteObject } from "@firebase/storage";
-import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
+import {
+    doc,
+    setDoc,
+    updateDoc,
+    getDoc,
+    deleteField,
+} from "firebase/firestore";
 import { db } from "../environment/evironment";
 
 const useFirebase = () => {
@@ -50,12 +56,18 @@ const useFirebase = () => {
                 }
             });
     };
-
+    const deleteCampoFireStore = async (id, campo) => {
+        const referencia = doc(db, "usuarios", id);
+        await updateDoc(referencia, {
+            [campo]: deleteField(),
+        });
+    };
     return {
         createDoc,
         updateDocument,
         deleteFileStorage,
         createAlbum,
+        deleteCampoFireStore,
     };
 };
 

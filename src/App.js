@@ -10,6 +10,7 @@ import "./components/Inicio/styleInicio.scss";
 import Login from "./components/Login/Login";
 import NuevaCuenta from "./components/Login/NuevaCuenta";
 import PrivateRoute from "./components/PrivateRoute";
+import PrivateRouteLogin from "./components/PrivateRouteLogin";
 
 function App() {
     return (
@@ -29,8 +30,12 @@ function App() {
                             path="/creacion-album"
                             component={CAlbum}
                         />
-                        <Route exact path="/login" component={Login} />
-                        <Route
+                        <PrivateRouteLogin
+                            exact
+                            path="/login"
+                            component={Login}
+                        />
+                        <PrivateRouteLogin
                             exact
                             path="/nueva-cuenta"
                             component={NuevaCuenta}

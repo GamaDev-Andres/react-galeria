@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import {
+    signOut,
     getAuth,
     signInWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup,
 } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
-
-// import from ""
+import { ContextInicio } from "../ContextIncio";
 
 const Alerta = styled.p`
     display: block;
@@ -20,11 +20,12 @@ const Alerta = styled.p`
 `;
 const Login = () => {
     const [alerta, setAlerta] = useState(false);
-    const [user, setUser] = useState({
+    const [userForm, setUserForm] = useState({
         email: "",
         password: "",
     });
-    const { email, password } = user;
+    const { user, setUser } = useContext(ContextInicio);
+    const { email, password } = userForm;
     let history = useHistory();
 
     //submit
@@ -36,21 +37,28 @@ const Login = () => {
             setAlerta("todos los campos son obligatorios");
             return;
         }
-
+        if (user) {
+            const auth = getAuth();
+            signOut(auth)
+                .then((res) => {
+                    console.log(res);
+                    setUser(null);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
         // Pasarlo al action
         //  iniciarSesion({ email, contraseña });
         const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                let user = userCredential.user;
-                setUser({
+                setUserForm({
                     email: "",
                     password: "",
                 });
                 setAlerta(null);
                 history.push("/");
-
-                console.log(user.uid);
             })
             .catch((error) => {
                 console.log("error code ----" + error.code);
@@ -65,8 +73,8 @@ const Login = () => {
         // history.push("/");
     };
     const handleChange = (e) => {
-        setUser({
-            ...user,
+        setUserForm({
+            ...userForm,
             [e.target.name]: e.target.value,
         });
     };

@@ -108,10 +108,12 @@ const Album = ({ datos, setAlbumes }) => {
     const [spinner, setSpinner] = useState(false);
     const [arrFotos, setArrFotos] = useState(datos.fotos);
     const [tomandoFoto, setTomandoFoto] = useState(false);
-    const { updateDocument } = useFirebase();
+    const { updateDocument, deleteCampoFireStore } = useFirebase();
     const handleDelete = () => {
         let newAlbums = albumes.filter((album) => album.id !== datos.id);
         setAlbumes(newAlbums);
+        const id = user.uid;
+        deleteCampoFireStore(id, datos.nameAlbum);
     };
 
     useEffect(() => {
