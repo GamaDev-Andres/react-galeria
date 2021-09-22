@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Card from "./Card";
 import { ContextInicio } from "../ContextIncio";
+//defino estilos del subcontenedor junto a sus mediaqueries
 const SubContenedor = styled.div`
     margin: 0 auto;
     width: 90%;
@@ -15,7 +16,6 @@ const SubContenedor = styled.div`
     @media (max-width: 480px) {
         grid-template-columns: repeat(2, 1fr);
     }
-    /* grid-auto-rows: minmax(100px, 200px); */
 `;
 const Alerta = styled.p`
     margin: 0 auto;
@@ -58,7 +58,7 @@ const Resultados = ({ estilosSections }) => {
     const [totalPaginas, setTotalPaginas] = useState(null);
     const { setUrl, resultados, busqueda, paginaActual, setPaginaActual } =
         useContext(ContextInicio);
-
+    //actualiza la cantidad de paginas cada que los resultados cambian
     useEffect(() => {
         if (resultados) {
             setTotalPaginas(Math.ceil(resultados.totalHits / 20));
@@ -66,6 +66,7 @@ const Resultados = ({ estilosSections }) => {
             $resultados.scrollIntoView({ behavior: "smooth" });
         }
     }, [resultados]);
+    //maneja las paginas segun los clicks y hace las respectivas consultas
     const handleClick = (e) => {
         if (e.target.textContent === "Anterior") {
             setPaginaActual(paginaActual - 1);
@@ -91,6 +92,7 @@ const Resultados = ({ estilosSections }) => {
     return (
         <section id="resultados" style={estilosSections}>
             <h2>{busqueda && `Resultados de ${busqueda}`}</h2>
+            {/* validando los resultados vacios */}
             {resultados &&
                 (resultados.total === 0 ? (
                     <Alerta>No hay resultados de {busqueda}</Alerta>

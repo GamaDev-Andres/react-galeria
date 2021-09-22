@@ -53,10 +53,12 @@ const Button = styled.button`
 const Card = ({ foto }) => {
     const { setModal, user, albumes, setAlbumes } = useContext(ContextInicio);
     const { updateDocument } = useFirebase();
+    //formo el objeto al dar click
     const handleClick = (e) => {
         const img = e.target.parentElement.nextSibling;
         setModal({ inicio: img.getAttribute("dataimg"), galeria: "" });
     };
+    //agrega foto al album pixaby
     const handleAdd = () => {
         let data = {
             normal: foto.previewURL,

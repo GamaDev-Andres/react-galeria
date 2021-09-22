@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Redirect, Route } from "react-router";
 import { ContextInicio } from "./ContextIncio";
-
+//RUTA PRIVADA PARA COMPONENTES PRINCIPALES
 const PrivateRoute = (props) => {
     const { user } = useContext(ContextInicio);
     return (

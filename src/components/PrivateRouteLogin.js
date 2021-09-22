@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Redirect, Route } from "react-router";
 import { ContextInicio } from "./ContextIncio";
+// RUTA PRIVADA PARA LOGIN Y NUEVO USUARIO
 const PrivateRouteLogin = (props) => {
     const { user } = useContext(ContextInicio);
     return (

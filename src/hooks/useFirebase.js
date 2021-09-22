@@ -1,4 +1,4 @@
-import { deleteObject } from "@firebase/storage";
+import { deleteObject, listAll, ref } from "@firebase/storage";
 import {
     doc,
     setDoc,
@@ -6,7 +6,7 @@ import {
     getDoc,
     deleteField,
 } from "firebase/firestore";
-import { db } from "../environment/evironment";
+import { db, storage } from "../environment/evironment";
 
 const useFirebase = () => {
     //creacion doc del usuario
@@ -25,6 +25,7 @@ const useFirebase = () => {
         const rta = await setDoc(doc(db, "usuarios", user.uid), data);
         console.log(rta);
     };
+    //crea album en firestore
     const createAlbum = async (user, albumes, album) => {
         const albumRef = doc(db, "usuarios", user.uid);
         const docSnap = await getDoc(albumRef);
@@ -34,12 +35,14 @@ const useFirebase = () => {
             [album.nameAlbum]: album,
         });
     };
+    //actualiza las fotos del respectivo album de cierto user
     const updateDocument = async (user, data, datosAlbum) => {
         const albumRef = doc(db, "usuarios", user.uid);
         await updateDoc(albumRef, {
             [datosAlbum.nameAlbum]: { ...datosAlbum, fotos: data },
         });
     };
+    //elimina fotos del storage del firebase
     const deleteFileStorage = (fileRef) => {
         console.log(fileRef);
         deleteObject(fileRef)
@@ -56,10 +59,34 @@ const useFirebase = () => {
                 }
             });
     };
-    const deleteCampoFireStore = async (id, campo) => {
-        const referencia = doc(db, "usuarios", id);
+
+    //elimina campos de firestore
+    const deleteCampoFireStore = async (userId, campo) => {
+        const referencia = doc(db, "usuarios", userId);
         await updateDoc(referencia, {
             [campo]: deleteField(),
+        });
+    };
+    //elimina album en el storage de firebase
+    const deleteAlbumStorage = async (userId, nameAlbum) => {
+        const referencia = ref(
+            storage,
+            `imagenes-galeria/${userId}/${nameAlbum}`
+        );
+        listAll(referencia).then((res) => {
+            console.log(res.items);
+            res.items.forEach((itemRef) => {
+                console.log(itemRef);
+
+                deleteObject(itemRef)
+                    .then((res) => {
+                        console.log("album " + nameAlbum + " eliminado");
+                    })
+                    .catch((error) => {
+                        console.log("hubo un error eliminando el album");
+                        console.log(error);
+                    });
+            });
         });
     };
     return {
@@ -68,6 +95,7 @@ const useFirebase = () => {
         deleteFileStorage,
         createAlbum,
         deleteCampoFireStore,
+        deleteAlbumStorage,
     };
 };
 

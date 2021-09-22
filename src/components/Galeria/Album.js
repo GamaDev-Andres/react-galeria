@@ -108,14 +108,17 @@ const Album = ({ datos, setAlbumes }) => {
     const [spinner, setSpinner] = useState(false);
     const [arrFotos, setArrFotos] = useState(datos.fotos);
     const [tomandoFoto, setTomandoFoto] = useState(false);
-    const { updateDocument, deleteCampoFireStore } = useFirebase();
-    const handleDelete = () => {
+    const { updateDocument, deleteCampoFireStore, deleteAlbumStorage } =
+        useFirebase();
+    //elimina album en storage y firestore
+    const handleDeleteAlbum = () => {
         let newAlbums = albumes.filter((album) => album.id !== datos.id);
         setAlbumes(newAlbums);
         const id = user.uid;
         deleteCampoFireStore(id, datos.nameAlbum);
+        deleteAlbumStorage(id, datos.nameAlbum);
     };
-
+    //actualiza el array de fotos del album cada que este se modifique
     useEffect(() => {
         if (arrFotos.length > 8) {
             setVerMas(false);
@@ -130,7 +133,6 @@ const Album = ({ datos, setAlbumes }) => {
 
     //funcion encargada de manejo de archivos del input type file
     const handleChange = (e) => {
-        console.log("hola");
         const inputFiles = e.target.files;
         //itero los archivos los leo y les asigno evento y actualizo las fotos
         for (const file of inputFiles) {
@@ -140,7 +142,10 @@ const Album = ({ datos, setAlbumes }) => {
                 const data = e.currentTarget.result;
                 console.log(data);
                 let idFoto = uuidv4();
-                const imagesRef = ref(storage, `imagenes-galeria/${idFoto}`);
+                const imagesRef = ref(
+                    storage,
+                    `imagenes-galeria/${user.uid}/${datos.nameAlbum}/${idFoto}`
+                );
                 setSpinner(true);
                 uploadString(imagesRef, data, "data_url").then((snapshot) => {
                     console.log("archivo cargado");
@@ -151,10 +156,10 @@ const Album = ({ datos, setAlbumes }) => {
                         setSpinner(false);
                     });
                 });
-                // setArrFotos([...arrFotos, { data, id: uuidv4() }]);
             });
         }
     };
+    //funcion encargada de los archivos obtenidos por el "drop" en el album
     const handleDrop = (e) => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
@@ -163,7 +168,10 @@ const Album = ({ datos, setAlbumes }) => {
         reader.addEventListener("load", (e) => {
             let data = e.currentTarget.result;
             let idFoto = uuidv4();
-            const imagesRef = ref(storage, `imagenes-galeria/${idFoto}`);
+            const imagesRef = ref(
+                storage,
+                `imagenes-galeria/${user.uid}/${datos.nameAlbum}/${idFoto}`
+            );
             setSpinner(true);
             uploadString(imagesRef, data, "data_url").then((snapshot) => {
                 console.log("archivo cargado");
@@ -183,7 +191,7 @@ const Album = ({ datos, setAlbumes }) => {
                 {tomandoFoto && (
                     <TomarFoto
                         arrFotos={arrFotos}
-                        idAlbum={datos.id}
+                        nameAlbum={datos.nameAlbum}
                         setArrFotos={setArrFotos}
                         setTomandoFoto={setTomandoFoto}
                     />
@@ -207,7 +215,10 @@ const Album = ({ datos, setAlbumes }) => {
                                 aria-label="Archivo"
                             />
                         </DivInputFile>
-                        <button className="btn delete" onClick={handleDelete}>
+                        <button
+                            className="btn delete"
+                            onClick={handleDeleteAlbum}
+                        >
                             Eliminar album
                         </button>
                     </DivButtons>

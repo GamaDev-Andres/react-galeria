@@ -20,6 +20,7 @@ const Nav = styled.nav`
 
 const Header = () => {
     const { user, setUser } = useContext(ContextInicio);
+    //OBSERVO LA AUTENTICACION DEL USUARIO, PARA ASI MISMO ACTUALIZAR "USER"
     useEffect(() => {
         const auth = getAuth();
         onAuthStateChanged(auth, (usuario) => {
@@ -29,7 +30,7 @@ const Header = () => {
             }
         });
     }, []);
-
+    //CIERRA LA SESION DEL USUARIO
     const cerrarSesion = () => {
         const auth = getAuth();
         signOut(auth)
@@ -61,6 +62,7 @@ const Header = () => {
                 >
                     Galeria
                 </NavLink>
+
                 {user ? (
                     <NavLink
                         className="enlaces-sesion cerrar"

@@ -69,7 +69,6 @@ const ContextIncioProvider = ({ children }) => {
         if (formAlbum) {
             setAlbumes([...albumes, formAlbum]);
             createAlbum(user, albumes, formAlbum);
-            // updateDocument(user, formAlbum, false);
         }
     }, [formAlbum]);
     //useeffect que controla las consultas a la API de pixaby

@@ -42,6 +42,7 @@ const Nav = styled.nav`
         }
     }
 `;
+//MENU QUE SE RENDERIZA SEGUN TAMAÑO PANTALLAS
 const MenuResponsive = () => {
     return (
         <Nav id="nav-down">

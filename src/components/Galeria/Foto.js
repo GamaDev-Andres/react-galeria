@@ -51,21 +51,24 @@ const Button = styled.button`
     }
 `;
 const Foto = ({ src, nameAlbum, datos }) => {
-    const { setModal } = useContext(ContextInicio);
+    const { setModal, user } = useContext(ContextInicio);
     const { deleteFileStorage } = useFirebase();
-    const handleClick = () => {
+    const handleModal = () => {
         setModal({ galeria: src.grande || src.data, inicio: "" });
     };
     const handleDelete = () => {
         let newFotos = datos.arr.filter((objFoto) => objFoto.id !== src.id);
         datos.set(newFotos);
-        const fileDelete = ref(storage, `imagenes-galeria/${src.id}`);
+        const fileDelete = ref(
+            storage,
+            `imagenes-galeria/${user.uid}/${nameAlbum}/${src.id}`
+        );
         deleteFileStorage(fileDelete);
     };
     return (
         <Div>
             <DivButtons>
-                <Button onClick={handleClick}>Ver</Button>
+                <Button onClick={handleModal}>Ver</Button>
                 <Button onClick={handleDelete}>Eliminar</Button>
             </DivButtons>
             <img

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../environment/evironment";
 import { getDownloadURL, uploadString, ref } from "firebase/storage";
 import Spinner from "./Spinner";
+import { ContextInicio } from "../ContextIncio";
 // import useFirebase from "../../hooks/useFirebase";
 // import { ContextInicio } from "../ContextIncio";
 
@@ -25,11 +26,11 @@ const Div = styled.div`
         height: auto;
     }
 `;
-const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos, idAlbum }) => {
+const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos, nameAlbum }) => {
     const [stream, setStream] = useState(null);
     const [fotoTomada, setFotoTomada] = useState(null);
     const [spinner, setSpinner] = useState(false);
-
+    const { user } = useContext(ContextInicio);
     useEffect(() => {
         const video = document.querySelector("#video");
 
@@ -52,6 +53,7 @@ const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos, idAlbum }) => {
 
     //funcion que toma la foto
     const tomarFoto = () => {
+        //variables para el canvas
         const video = document.querySelector("#video");
         const width = video.videoWidth;
         const height = video.videoHeight;
@@ -59,16 +61,23 @@ const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos, idAlbum }) => {
         canvas.setAttribute("height", "420px");
         canvas.setAttribute("width", "600px");
         canvas.getContext("2d").drawImage(video, 0, 0, width, height);
+        //url en base64
         let data = canvas.toDataURL("image/png");
 
         setFotoTomada(true);
         const containerFoto = document.querySelector("#container-foto");
         const img = document.createElement("img");
+        //paso url a  la img
         img.src = data;
         containerFoto.appendChild(img);
         let idFoto = uuidv4();
-        const imagesRef = ref(storage, `imagenes-galeria/${idFoto}`);
+        //subiendo url al storage y firestore
+        const imagesRef = ref(
+            storage,
+            `imagenes-galeria/${user.uid}/${nameAlbum}/${idFoto}`
+        );
         setSpinner(true);
+        //cargo archivo al storage
         uploadString(imagesRef, data, "data_url").then((snapshot) => {
             console.log("archivo cargado");
             console.log(snapshot);
