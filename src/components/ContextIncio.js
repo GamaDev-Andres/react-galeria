@@ -47,7 +47,6 @@ const ContextIncioProvider = ({ children }) => {
 
                     setAlbumes(albumsObjToArr);
                 } else {
-                    // doc.data() will be undefined in this case
                     console.log("No such document!");
                     createDoc(user);
                     obteniendoData();
@@ -62,7 +61,6 @@ const ContextIncioProvider = ({ children }) => {
         onAuthStateChanged(auth, (usuario) => {
             if (usuario) {
                 setUser(usuario);
-                // console.log(usuario);
             }
         });
     }, []);

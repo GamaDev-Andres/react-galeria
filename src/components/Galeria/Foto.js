@@ -1,5 +1,8 @@
+import { ref } from "@firebase/storage";
 import React, { useContext } from "react";
 import styled from "styled-components";
+import { storage } from "../../environment/evironment";
+import useFirebase from "../../hooks/useFirebase";
 import { ContextInicio } from "../ContextIncio";
 const Div = styled.div`
     position: relative;
@@ -9,7 +12,7 @@ const Div = styled.div`
     img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
     }
     &:hover {
         div {
@@ -49,12 +52,15 @@ const Button = styled.button`
 `;
 const Foto = ({ src, nameAlbum, datos }) => {
     const { setModal } = useContext(ContextInicio);
+    const { deleteFileStorage } = useFirebase();
     const handleClick = () => {
         setModal({ galeria: src.grande || src.data, inicio: "" });
     };
     const handleDelete = () => {
         let newFotos = datos.arr.filter((objFoto) => objFoto.id !== src.id);
         datos.set(newFotos);
+        const fileDelete = ref(storage, `imagenes-galeria/${src.id}`);
+        deleteFileStorage(fileDelete);
     };
     return (
         <Div>

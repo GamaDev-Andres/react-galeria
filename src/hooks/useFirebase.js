@@ -1,4 +1,5 @@
-import { doc, setDoc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
+import { deleteObject } from "@firebase/storage";
+import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../environment/evironment";
 
 const useFirebase = () => {
@@ -32,19 +33,28 @@ const useFirebase = () => {
         await updateDoc(albumRef, {
             [datosAlbum.nameAlbum]: { ...datosAlbum, fotos: data },
         });
-
-        // Atomically add a new region to the "regions" array field.
-        // await updateDoc(albumRef, {
-        //     albums: arrayUnion(data),
-        // });
-
-        // Atomically remove a region from the "regions" array field.
+    };
+    const deleteFileStorage = (fileRef) => {
+        console.log(fileRef);
+        deleteObject(fileRef)
+            .then((res) => {
+                console.log("foto eliminada!", res);
+            })
+            .catch((error) => {
+                // console.log("ocurrio error eliminando foto ", error);
+                console.log(error.code);
+                if (error.code === "storage/object-not-found") {
+                    console.log("foto eliminada");
+                } else {
+                    console.log(error);
+                }
+            });
     };
 
     return {
         createDoc,
         updateDocument,
-
+        deleteFileStorage,
         createAlbum,
     };
 };

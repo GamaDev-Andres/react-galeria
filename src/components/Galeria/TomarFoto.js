@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../environment/evironment";
 import { getDownloadURL, uploadString, ref } from "firebase/storage";
+import Spinner from "./Spinner";
 // import useFirebase from "../../hooks/useFirebase";
 // import { ContextInicio } from "../ContextIncio";
 
@@ -27,8 +28,7 @@ const Div = styled.div`
 const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos, idAlbum }) => {
     const [stream, setStream] = useState(null);
     const [fotoTomada, setFotoTomada] = useState(null);
-    // const { albumes, setAlbumes, user } = useContext(ContextInicio);
-    // const { updateDocument } = useFirebase();
+    const [spinner, setSpinner] = useState(false);
 
     useEffect(() => {
         const video = document.querySelector("#video");
@@ -68,21 +68,16 @@ const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos, idAlbum }) => {
         containerFoto.appendChild(img);
         let idFoto = uuidv4();
         const imagesRef = ref(storage, `imagenes-galeria/${idFoto}`);
+        setSpinner(true);
         uploadString(imagesRef, data, "data_url").then((snapshot) => {
             console.log("archivo cargado");
             console.log(snapshot);
             getDownloadURL(imagesRef).then((rta) => {
                 console.log("URL DE LA FOTO ", rta);
                 setArrFotos([...arrFotos, { data: rta, id: idFoto }]);
+                setSpinner(false);
             });
         });
-
-        // let newAlbums = albumes.map((album) =>
-        //     album.id === idAlbum ? { ...album, fotos: arrFotos } : album
-        // );
-        // setAlbumes(newAlbums);
-        // console.log("ACTUALIZANDO");
-        // console.log(newAlbums);
     };
 
     //para el streaming
@@ -92,23 +87,26 @@ const TomarFoto = ({ setTomandoFoto, setArrFotos, arrFotos, idAlbum }) => {
         setTomandoFoto(false);
     };
     return (
-        <div className="modal">
-            <button className="btn" onClick={stopStreaming}>
-                <i className="fas fa-times-circle"></i>
-            </button>
-            <Div id="container-foto">
-                {!fotoTomada && <Video autoPlay={true} id="video"></Video>}
-            </Div>
+        <>
+            {spinner && <Spinner />}
+            <div className="modal">
+                <button className="btn" onClick={stopStreaming}>
+                    <i className="fas fa-times-circle"></i>
+                </button>
+                <Div id="container-foto">
+                    {!fotoTomada && <Video autoPlay={true} id="video"></Video>}
+                </Div>
 
-            <button
-                disabled={fotoTomada ? true : false}
-                type="button"
-                className="btn"
-                onClick={tomarFoto}
-            >
-                <i className="fas fa-camera"></i>
-            </button>
-        </div>
+                <button
+                    disabled={fotoTomada ? true : false}
+                    type="button"
+                    className="btn"
+                    onClick={tomarFoto}
+                >
+                    <i className="fas fa-camera"></i>
+                </button>
+            </div>
+        </>
     );
 };
 

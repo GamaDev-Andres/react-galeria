@@ -4,6 +4,8 @@ import { ContextInicio } from "../ContextIncio";
 
 const Img = styled.img`
     max-width: 100%;
+    max-height: 90%;
+    object-fit: contain;
 `;
 const Button = styled.button`
     padding: 8px;
